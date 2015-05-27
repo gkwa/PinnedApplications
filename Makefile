@@ -1,14 +1,14 @@
+all: test2
+all: test3
+
 test3:
 	powershell -noprofile -executionpolicy unrestricted -command install.ps1
-	powershell -noprofile -executionpolicy unrestricted -file pinnapps.ps1 -path 'C:\Program Files*\MySQL\MySQL*\MySQLWorkbench.exe'
+	powershell -noprofile -executionpolicy unrestricted -file pinnpath.ps1 -path 'C:\Program Files*\MySQL\MySQL*\MySQLWorkbench.exe'
 
 test2:
 	powershell -noprofile -executionpolicy unrestricted -command install.ps1
-	powershell -noprofile -executionpolicy unrestricted -file pinnapps.ps1 -path 'c:\cygwin*\Cygwin2.lnk'
+	powershell -noprofile -executionpolicy unrestricted -file pinnpath.ps1 -path 'c:\cygwin*\Cygwin2.lnk'
 
-test:
-	powershell -noprofile -executionpolicy unrestricted -command install.ps1
-	powershell -noprofile -executionpolicy unrestricted -file pinnapps.ps1
 debug:
 	powershell -noprofile -executionpolicy unrestricted -command install.ps1
-	powershell -noprofile -executionpolicy unrestricted -file pinnapps.ps1 -trace
+	powershell -noprofile -executionpolicy unrestricted -file pinnpath.ps1 -trace

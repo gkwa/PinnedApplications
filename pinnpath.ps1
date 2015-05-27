@@ -18,20 +18,41 @@ if(!(test-path "$tbfolder"))
 }
 
 $name = split-path $path -leaf -resolve # For $path=c:\cygwin64\Cygwin2.lnk, $name is Cygwin2.lnk
-$nameSansExt = [io.path]::GetFileNameWithoutExtension($name)
 
-# $pathInTaskBar = join-path $tbfolder $name
-$pathInTaskBar = join-path $tbfolder ($nameSansExt + '.lnk')
-write-host $pathInTaskbar
-# example: C:\Users\Administrator\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\Cygwin2.lnk
+$pathexpanded = (get-childitem($path)).fullname
 
-if(test-path $pathInTaskbar)
+# Unpin
+try
 {
-    Set-PinnedApplication -Action UnPinFromTaskbar -FilePath $pathInTaskbar
+    Set-PinnedApplication -Action UnPinFromTaskbar -FilePath $pathexpanded
+
+} catch {
+    $message = ($_.Exception).Message
+
+    if('Verb Unpin from Taskbar not found.' -match $message)
+    {
+	# I don't care if its not yet pinned
+
+    }else{
+	echo $_.Exception|format-list -force
+    }
 }
 
-$p = (get-childitem($path)).fullname
-if(test-path $p)
+# Pin
+try
 {
-    Set-PinnedApplication -Action PinToTaskbar -FilePath $p
+    if(test-path $pathexpanded)
+    {
+	Set-PinnedApplication -Action PinToTaskbar -FilePath $pathexpanded
+    }
+
+} catch {
+
+    echo $_.Exception|format-list -force
+
+    if(1 -eq $error.Count)
+    {
+	$error.Clear()
+    }
+
 }
